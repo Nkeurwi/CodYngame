@@ -1,0 +1,40 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class test1 {  // Les noms de classe commencent par une majuscule
+    
+    public void fonction1() {
+        try {
+            // 1. Lecture de l'entrée utilisateur
+            BufferedReader fct = new BufferedReader(new InputStreamReader(System.in));
+            System.out.println("Saisissez la fonction :");
+            String fonction = fct.readLine();
+            
+            // 2. Exécution de la commande
+            Process process = Runtime.getRuntime().exec(fonction);  // Guillemets doubles
+            
+            // 3. Lecture de la sortie
+            BufferedReader reader = new BufferedReader(
+                new InputStreamReader(process.getInputStream()));
+            
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+            
+            // 4. Gestion des erreurs
+            int exitCode = process.waitFor();
+            if (exitCode != 0) {
+                System.err.println("Erreur d'exécution (code " + exitCode + ")");
+            }
+            
+        } catch (IOException | InterruptedException e) {  // Ajout de InterruptedException
+            System.err.println("Erreur : " + e.getMessage());
+        }
+    }
+    
+    public static void main(String[] args) {  // Ajout d'une méthode main pour tester
+        new test1().fonction1();
+    }
+}
